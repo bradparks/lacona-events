@@ -28,7 +28,7 @@ export function execute (result) {
   })
 }
 
-export class Sentence extends Phrase {
+export class ScheduleEvent extends Phrase {
   describe () {
     return (
       <sequence unique={true}>
@@ -44,7 +44,44 @@ export class Sentence extends Phrase {
         </choice>
         <LocationWithAt optional={true} prefered={false} id='location' />
       </sequence>
-
     )
   }
+}
+
+export function executeEvent (result) {}
+
+export function executeReminder (result) {
+  global.createReminder(result.title, result.date, (err) => {
+    if (err) {
+      global.notify('Failed to Create Reminder', '', err)
+    } else {
+      global.notify('Created Reminder', '', `${result.title} on ${moment(result.date).format('LLL')}`)
+    }
+  })
+}
+
+export class CreateReminder extends Phrase {
+  describe () {
+    return (
+      <sequence id='reminder'>
+        <list items={['remind me to ', 'create reminder ', 'create a reminder ', 'add a reminder ', 'add reminder ']} limit={1} category='action' />
+        <String argument='reminder title' id='title' limit={1} splitOn=' ' />
+        <sequence optional={true} merge={true}>
+          <literal text=' ' category='conjunction' />
+          <choice merge={true}>
+            <Time id='time' includeAt={true} allowPast={false} />
+            <DatePhrase id='date' allowPast={false} />
+            <DateTime id='datetime' includeAt={true} allowPast={false} />
+          </choice>
+        </sequence>
+      </sequence>
+    )
+  }
+}
+
+export default {
+  sentences: [
+    {Sentence: CreateReminder, execute: executeReminder},
+    {Sentence: ScheduleEvent, execute: executeEvent}
+  ]
 }
