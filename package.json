@@ -4,7 +4,7 @@
   "description": "Lacona Command for manipulating Apple Calendar Events and Reminders",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel src --out-dir lib",
+    "build": "babel --stage 0 src --out-dir lib",
     "clean": "rimraf lib tmp",
     "prepublish": "npm run clean && npm run build"
   },
@@ -26,13 +26,13 @@
   "homepage": "https://github.com/brandonhorst/lacona-command-events",
   "devDependencies": {
     "babel": "^5.8.29",
-    "lacona": "^0.29.0",
-    "rimraf": "^2.4.3"
+    "lacona": "^0.35.0",
+    "rimraf": "^2.5.0"
   },
   "dependencies": {
-    "lacona-phrase": "^0.7.0",
-    "lacona-phrase-datetime": "^0.3.1",
-    "lacona-phrase-string": "0.1.0",
-    "moment": "^2.10.6"
+    "lacona-phrase": "^0.9.1",
+    "lacona-phrase-datetime": "^0.6.0",
+    "lacona-phrase-string": "^0.4.0",
+    "moment": "^2.11.0"
   }
 }
