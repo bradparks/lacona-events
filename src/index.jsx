@@ -3,7 +3,7 @@
 import { createElement, Phrase } from 'lacona-phrase'
 import { createEvent, createReminder, showNotification } from 'lacona-api'
 import { String } from 'lacona-phrase-string'
-import { DateTime /*, Range */} from 'lacona-phrase-datetime'
+import { DateTime, Range} from 'lacona-phrase-datetime'
 import { Command } from 'lacona-command'
 import moment from 'moment'
 
@@ -191,4 +191,4 @@ export class CreateReminder extends Phrase {
   }
 }
 
-export const extensions = [CreateReminder]
+export const extensions = [ScheduleEvent, CreateReminder]
