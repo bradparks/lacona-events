@@ -1,93 +1,23 @@
 /** @jsx createElement */
 
-import { createElement, Phrase } from 'lacona-phrase'
+import { createElement } from 'elliptical'
 import { createEvent, createReminder, showNotification } from 'lacona-api'
-import { String } from 'lacona-phrase-string'
-import { DateTime, Range} from 'lacona-phrase-datetime'
+import { String } from 'elliptical-string'
+import { DateTime, Range} from 'elliptical-datetime'
 import { Command } from 'lacona-command'
 import moment from 'moment'
+import {eventDemoExecute, reminderDemoExecute} from './demo'
 
-class LocationWithAt extends Phrase {
-  describe () {
-    return (
-      <sequence>
-        <list items={[' at ', ' on ', ' in ']} limit={1} category='conjunction' />
-        <String argument='location' merge splitOn=' ' limit={1} />
-      </sequence>
-    )
-  }
-}
-
-function formatRange (obj) {
-  const start = moment(obj.start)
-  const end = moment(obj.end)
-
-  if (obj.allday) {
-    return [
-      {text: 'all day '},
-      {text: start.format('dddd, MMMM Do, YYYY'), argument: 'date'},
-      {text: ' to all day '},
-      {text: end.format('dddd, MMMM Do, YYYY'), argument: 'date'}
-    ]
-  } else if (end.diff(start, 'days') === 0) {
-    return [
-      {text: start.format('dddd, MMMM Do, YYYY'), argument: 'date'},
-      {text: ' at '},
-      {text: start.format('h:mma'), argument: 'time'},
-      {text: ' to '},
-      {text: end.format('h:mma'), argument: 'time'}
-    ]
-  } else {
-    return [
-      {text: start.format('dddd, MMMM Do, YYYY'), argument: 'date'},
-      {text: ' at '},
-      {text: start.format('h:mma'), argument: 'time'},
-      {text: ' to '},
-      {text: end.format('dddd, MMMM Do, YYYY'), argument: 'date'},
-      {text: ' at '},
-      {text: end.format('h:mma'), argument: 'time'},
-    ]
-  }
-}
-
-class ScheduleEventObject {
-  constructor({title, location, range}) {
-    this.title = title
-    this.location = location
-    this.range = range
-  }
-
-  _demoExecute () {
-    return _.flatten([
-      {text: 'create an event', category: 'action'},
-      {text: ' called '},
-      {text: this.title, argument: 'calendar event'},
-      this.location ? [{text: ' with location '}, {text: this.location, argument: 'location'}] : [],
-      {text: ' '},
-      formatRange(this.range)
-    ])
-  }
-
-  execute () {
-    createEvent({
-      title: this.title,
-      // location: this.location,
-      start: this.range.start,
-      end: this.range.end,
-      allDay: this.range.allDay
-    }, (err) => {
-      if (err) {
-        showNotification({title: 'Failed to Create Event'})
-      } else {
-        showNotification({
-          title: 'Created Event',
-          subtitle: this.title,
-          content: displayRange(this.range)
-        })
-      }
-    })
-  }
-}
+// class LocationWithAt extends Phrase {
+//   describe () {
+//     return (
+//       <sequence>
+//         <list items={[' at ', ' on ', ' in ']} limit={1} category='conjunction' />
+//         <String argument='location' merge splitOn=' ' limit={1} />
+//       </sequence>
+//     )
+//   }
+// }
 
 function displayRange({start, end, allDay}) {
   const startM = moment(start)
@@ -108,8 +38,30 @@ function displayRange({start, end, allDay}) {
   }
 }
 
-export class ScheduleEvent extends Phrase {
-  static extends = [Command]
+export const ScheduleEvent = {
+  extends: [Command],
+
+  execute (result) {
+    createEvent({
+      title: result.title,
+      // location: result.location,
+      start: result.range.start,
+      end: result.range.end,
+      allDay: result.range.allDay
+    }, (err) => {
+      if (err) {
+        showNotification({title: 'Failed to Create Event'})
+      } else {
+        showNotification({
+          title: 'Created Event',
+          subtitle: result.title,
+          content: displayRange(result.range)
+        })
+      }
+    })
+  },
+
+  demoExecute: eventDemoExecute,
 
   describe () {
     return (
@@ -137,40 +89,24 @@ function formatDateTime (datetime) {
   ]
 }
 
-class CreateReminderObject {
-  constructor ({title, datetime}) {
-    this.title = title
-    this.datetime = datetime
-  }
+export const CreateReminder = {
+  extends: [Command],
 
-  _demoExecute () {
-    const datetime = this.datetime ? [{text: ' due '}].concat(formatDateTime(this.datetime)) : {text: ' without a due date'}
+  demoExecute: reminderDemoExecute,
 
-    return _.flatten([
-      {text: 'create a reminder', category: 'action'},
-      {text: ' called '},
-      {text: this.title, argument: 'reminder title'},
-      datetime
-    ]) 
-  }
-
-  execute () {
-    createReminder({title: this.title, date: this.datetime}, (err) => {
+  execute (result) {
+    createReminder({title: result.title, date: result.datetime}, (err) => {
       if (err) {
         showNotification({title: 'Failed to Create Reminder'})
       } else {
-        if (this.datetime) {
-          showNotification({title: 'Created Reminder', subtitle: this.title, content: `${moment(this.datetime).format('LLL')}`})
+        if (result.datetime) {
+          showNotification({title: 'Created Reminder', subtitle: result.title, content: `${moment(result.datetime).format('LLL')}`})
         } else {
-          showNotification({title: 'Created Reminder', subtitle: this.title})
+          showNotification({title: 'Created Reminder', subtitle: result.title})
         }
       }
     })
-  }  
-}
-
-export class CreateReminder extends Phrase {
-  static extends = [Command]
+  },
 
   describe () {
     return (

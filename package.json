@@ -1,16 +1,17 @@
 {
-  "name": "lacona-command-events",
+  "name": "lacona-events",
   "version": "0.0.1",
   "description": "Lacona Command for manipulating Apple Calendar Events and Reminders",
   "main": "lib/index.js",
   "scripts": {
-    "build": "babel --stage 0 src --out-dir lib",
-    "clean": "rimraf lib tmp",
+    "test": "mocha --compilers jsx:babel-register --watch-extensions jsx",
+    "build": "mkdir -p build; babel src --out-dir lib",
+    "clean": "rimraf lib",
     "prepublish": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/brandonhorst/lacona-command-events.git"
+    "url": "https://github.com/brandonhorst/lacona-events.git"
   },
   "keywords": [
     "lacona",
@@ -21,18 +22,33 @@
   "author": "@brandonhorst",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/brandonhorst/lacona-command-events/issues"
+    "url": "https://github.com/brandonhorst/lacona-events/issues"
   },
-  "homepage": "https://github.com/brandonhorst/lacona-command-events",
+  "homepage": "https://github.com/brandonhorst/lacona-events",
   "devDependencies": {
-    "babel": "^5.8.29",
-    "lacona": "^0.35.0",
-    "rimraf": "^2.5.0"
+    "babel": "^6.5.2",
+    "babel-cli": "^6.7.5",
+    "babel-plugin-transform-react-jsx": "^6.7.5",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-register": "^6.7.2",
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "rimraf": "^2.5.2"
   },
   "dependencies": {
-    "lacona-phrase": "^0.9.1",
-    "lacona-phrase-datetime": "^0.6.0",
-    "lacona-phrase-string": "^0.4.0",
-    "moment": "^2.11.0"
+    "elliptical": "^1.0.0-rc10",
+    "elliptical-datetime": "^1.0.0-rc3",
+    "elliptical-string": "^1.0.0-rc2",
+    "lacona-api": "0.1.0",
+    "lacona-command": "^0.2.0",
+    "moment": "^2.12.0"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ],
+    "plugins": [
+      "transform-react-jsx"
+    ]
   }
 }
