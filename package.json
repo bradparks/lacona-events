@@ -39,8 +39,8 @@
     "elliptical": "^1.0.0-rc10",
     "elliptical-datetime": "^1.0.0-rc3",
     "elliptical-string": "^1.0.0-rc2",
-    "lacona-api": "0.1.0",
-    "lacona-command": "^0.2.0",
+    "lacona-api": "0.1.1",
+    "lacona-command": "^0.2.1",
     "moment": "^2.12.0"
   },
   "babel": {
