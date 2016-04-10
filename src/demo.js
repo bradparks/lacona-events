@@ -1,4 +1,13 @@
 
+function formatDateTime (datetime) {
+  const datetimeMoment = moment(datetime)
+  return [
+    {text: datetimeMoment.format('dddd, MMMM Do, YYYY'), argument: 'date'},
+    {text: ' at '},
+    {text: datetimeMoment.format('h:mma'), argument: 'time'}
+  ]
+}
+
 function formatRange (obj) {
   const start = moment(obj.start)
   const end = moment(obj.end)

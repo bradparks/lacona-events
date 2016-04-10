@@ -80,15 +80,6 @@ export const ScheduleEvent = {
   }
 }
 
-function formatDateTime (datetime) {
-  const datetimeMoment = moment(datetime)
-  return [
-    {text: datetimeMoment.format('dddd, MMMM Do, YYYY'), argument: 'date'},
-    {text: ' at '},
-    {text: datetimeMoment.format('h:mma'), argument: 'time'}
-  ]
-}
-
 export const CreateReminder = {
   extends: [Command],
 
