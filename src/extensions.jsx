@@ -2,9 +2,8 @@
 
 import { createElement } from 'elliptical'
 import { createEvent, createReminder, showNotification } from 'lacona-api'
-import { String } from 'elliptical-string'
-import { DateTime, Range} from 'elliptical-datetime'
-import { Command } from 'lacona-command'
+import { Command, DateTime, Range, String } from 'lacona-phrases'
+
 import moment from 'moment'
 import {eventDemoExecute, reminderDemoExecute} from './demo'
 
@@ -118,4 +117,4 @@ export const CreateReminder = {
   }
 }
 
-export const extensions = [ScheduleEvent, CreateReminder]
+export default [ScheduleEvent, CreateReminder]
