@@ -1,6 +1,6 @@
 {
   "name": "lacona-events",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Lacona Command for manipulating Apple Calendar Events and Reminders",
   "lacona": {
     "extensions": "build/extensions.js"
