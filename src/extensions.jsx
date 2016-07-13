@@ -12,7 +12,7 @@ import {eventDemoExecute, reminderDemoExecute} from './demo'
 //     return (
 //       <sequence>
 //         <list items={[' at ', ' on ', ' in ']} limit={1} category='conjunction' />
-//         <String argument='location' merge splitOn=' ' limit={1} />
+//         <String label='location' merge splitOn=' ' limit={1} />
 //       </sequence>
 //     )
 //   }
@@ -47,16 +47,14 @@ export const ScheduleEvent = {
       start: result.range.start,
       end: result.range.end,
       allDay: result.range.allDay
-    }, (err) => {
-      if (err) {
-        showNotification({title: 'Failed to Create Event'})
-      } else {
-        showNotification({
-          title: 'Created Event',
-          subtitle: result.title,
-          content: displayRange(result.range)
-        })
-      }
+    }).then(() => {
+      showNotification({
+        title: 'Created Event',
+        subtitle: result.title,
+        content: displayRange(result.range)
+      })
+    }).catch(err => {
+      showNotification({title: 'Failed to Create Event'})
     })
   },
 
@@ -67,7 +65,7 @@ export const ScheduleEvent = {
       <map function={result => new ScheduleEventObject(result)}>
         <sequence unique={true}>
           <list items={['schedule ', 'create an event ', 'create event ', 'add an event ', 'add event ']} limit={1} category='action' id='verb' value='schedule' />
-          <String limit={1} splitOn=' ' argument='calendar event' id='title' />
+          <String limit={1} splitOn=' ' label='calendar event' id='title' />
           {/*<LocationWithAt optional id='location' preferred={false} />*/}
           <literal text=' ' category='conjunction' />
           <literal text='for ' category='conjunction' optional preferred limited />
@@ -85,16 +83,14 @@ export const CreateReminder = {
   demoExecute: reminderDemoExecute,
 
   execute (result) {
-    createReminder({title: result.title, date: result.datetime}, (err) => {
-      if (err) {
-        showNotification({title: 'Failed to Create Reminder'})
+    createReminder({title: result.title, date: result.datetime}).then(() => {
+      if (result.datetime) {
+        showNotification({title: 'Created Reminder', subtitle: result.title, content: `${moment(result.datetime).format('LLL')}`})
       } else {
-        if (result.datetime) {
-          showNotification({title: 'Created Reminder', subtitle: result.title, content: `${moment(result.datetime).format('LLL')}`})
-        } else {
-          showNotification({title: 'Created Reminder', subtitle: result.title})
-        }
+        showNotification({title: 'Created Reminder', subtitle: result.title})
       }
+    }).catch(err => {
+      showNotification({title: 'Failed to Create Reminder'})
     })
   },
 
@@ -104,9 +100,9 @@ export const CreateReminder = {
         <sequence>
           <list items={['remind me to ', 'create reminder ', 'create a reminder ', 'add a reminder ', 'add reminder ']} limit={1} category='action' id='verb' value='remind' />
           <choice merge>
-            <String argument='reminder title' id='title' consumeAll />
+            <String label='reminder title' id='title' consumeAll />
             <sequence>
-              <String limit={1} argument='reminder title' id='title' splitOn=' ' />
+              <String limit={1} label='reminder title' id='title' splitOn=' ' />
               <literal text=' ' category='conjunction' />
               <DateTime id='datetime' past={false} prepositions seconds={false} />
             </sequence>
