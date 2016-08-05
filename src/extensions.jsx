@@ -98,10 +98,10 @@ export const ScheduleEvent = {
             <list items={calendars} />
           </placeholder>
         </sequence>
-        <sequence optional limited id='location'>
+        {/*<sequence optional limited id='location'>
           <list items={[' at ', ' on ', ' in ']} limit={1} />
           <String label='location' merge splitOn=' ' limit={1} />
-        </sequence>
+        </sequence>*/}
         <sequence optional limited preferred id='calendar'>
           <list items={[' on ', ' in ', ' to ']} limit={1} />
           <placeholder argument='calendar' merge suppressEmpty={false}>
@@ -119,7 +119,7 @@ export const ScheduleEvent = {
             <list items={calendars} />
           </placeholder>
         </sequence>
-        <sequence optional limited ellipsis id='location'>
+        {/*<sequence optional limited ellipsis id='location'>
           <list items={[' at ', ' on ', ' in ']} limit={1} />
           <String label='location' merge splitOn=' ' limit={1} />
         </sequence>
@@ -128,7 +128,7 @@ export const ScheduleEvent = {
           <placeholder argument='calendar' merge suppressEmpty={false}>
             <list items={calendars} />
           </placeholder>
-        </sequence>
+        </sequence>*/}
       </sequence>
     )
   }
