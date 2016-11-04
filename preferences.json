@@ -1,0 +1,27 @@
+{
+  "scheduleHeader": {
+    "label": "Schedule Events",
+    "type": "header",
+    "examples": [
+      "schedule party tomorrow at 4pm"
+    ]
+  },
+  "enableSchedule": {
+    "title": "Enable Schedule Events",
+    "type": "boolean",
+    "default": true,
+    "separatorBelow": true
+  },
+  "createReminderHeader": {
+    "label": "Create Reminders",
+    "type": "header",
+    "examples": [
+      "remind me to eat tom"
+    ]
+  },
+  "enableCreateReminder": {
+    "title": "Enable Create Reminders",
+    "type": "boolean",
+    "default": true
+  }
+}

@@ -2,7 +2,7 @@
 
 import _ from 'lodash'
 import { createElement } from 'elliptical'
-import { createEvent, createReminder, showNotification, fetchReminderLists, fetchCalendars } from 'lacona-api'
+import { createEvent, createReminder, showNotification, fetchReminderLists, fetchCalendars, canAccessReminders, canAccessEvents } from 'lacona-api'
 import { Command, DateTime, Range, String } from 'lacona-phrases'
 
 import { fromPromise } from 'rxjs/observable/fromPromise'
@@ -85,7 +85,9 @@ export const ScheduleEvent = {
 
   demoExecute: eventDemoExecute,
 
-  describe ({observe}) {
+  describe ({observe, config}) {
+    if (!config.enableSchedule) return
+
     const calendars = observe(<CalendarSource />)
 
     return (
@@ -153,7 +155,9 @@ export const CreateReminder = {
     })
   },
 
-  describe ({observe}) {
+  describe ({observe, config}) {
+    if (!config.enableCreateReminder) return
+
     const reminderLists = observe(<ReminderListSource />)
 
     return (
@@ -201,4 +205,27 @@ export const CreateReminder = {
   }
 }
 
-export default [ScheduleEvent, CreateReminder]
+async function onLoadConfig ({observe, config, setConfig}) {
+  if (config.enableSchedule) {
+    if (await canAccessEvents()) {
+      observe(<CalendarSource />)
+    } else {
+      const newConfig = _.clone(config)
+      newConfig.enableSchedule = false
+      setConfig(newConfig)
+    }
+  }
+
+  if (config.enableCreateReminder) {
+    if (await canAccessReminders()) {
+      observe(<ReminderListSource />)
+    } else {
+      const newConfig = _.clone(config)
+      newConfig.enableCreateReminder = false
+      setConfig(newConfig)
+    }
+  }
+}
+
+export const extensions = [ScheduleEvent, CreateReminder]
+export const hooks = {onLoadConfig}
