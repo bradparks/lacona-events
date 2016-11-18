@@ -3,10 +3,10 @@
     "label": "Schedule Events",
     "type": "header",
     "examples": [
-      "schedule [party](calendar event) [tomorrow at 4pm](period of time)",
-      "schedule [meeting with Jenny](event) [11am for 1 hour](period of time)",
-      "schedule [vacation](event) for [2/3-2/8](period of time)",
-      "schedule [climbing trip](event) on [Personal](calendar) for [Friday](period of time)"
+      "schedule [surprise party](calendar event) [tomorrow at 4pm](period of time)",
+      "schedule [meeting with Jenny](calendar event) [11am for 1 hour](period of time)",
+      "schedule [vacation](calendar event) for [2/3-2/8](period of time)",
+      "schedule [climbing trip](calendar event) on [Personal](calendar) for [Friday](period of time)"
     ]
   },
   "enableSchedule": {
@@ -19,9 +19,9 @@
     "label": "Create Reminders",
     "type": "header",
     "examples": [
-      "remind me to [pick up the dry cleaning](reminder title) on [Wednesday](date and time)",
       "remind me to [redesign the homepage](reminder title)",
-      "remind me to [call Charles back](reminder title) at [4pm](date and time)"
+      "remind me to [pick up the dry cleaning](reminder title) on [Wednesday](date and time)",
+      "remind me to [call Charles back](reminder title) at [4pm tomorrow](date and time)"
     ]
   },
   "enableCreateReminder": {
